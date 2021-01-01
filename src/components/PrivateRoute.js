@@ -11,7 +11,7 @@ const PrivateRoute = ({
 		<Route
 			{...rest}
 			render={(props) =>
-				authExists ? <Component {...props} /> : <Redirect to='/' />
+				true ? <Component {...props} /> : <Redirect to='/' />
 			}
 		/>
 	);

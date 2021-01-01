@@ -28,7 +28,7 @@ const rrfProps = {
 
 const AuthIsLoaded = ({ children }) => {
 	const auth = useSelector((state) => state.firebase.auth);
-	if (!isLoaded(auth)) return <div>splash screen...</div>;
+	if (!isLoaded(auth)) return <div className='ui active centered loader'></div>;
 	return children;
 };
 
