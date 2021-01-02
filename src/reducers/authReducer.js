@@ -1,8 +1,12 @@
-import { LOGIN, LOGIN_ERROR, VERIFY, VERIFY_ERROR } from './../types/index';
-const authReducer = (
-	state = { loginError: '', verifyError: '' },
-	{ type, payload }
-) => {
+import {
+	LOGIN,
+	LOGIN_ERROR,
+	VERIFY,
+	VERIFY_ERROR,
+	LOGOUT,
+} from './../types/index';
+const initalState = { loginError: '', verifyError: '' };
+const authReducer = (state = initalState, { type, payload }) => {
 	switch (type) {
 		case LOGIN:
 			return state;
@@ -12,6 +16,8 @@ const authReducer = (
 			return state;
 		case VERIFY_ERROR:
 			return { ...state, verifyError: payload };
+		case LOGOUT:
+			return initalState;
 		default:
 			return state;
 	}

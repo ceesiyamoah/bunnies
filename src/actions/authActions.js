@@ -1,4 +1,10 @@
-import { LOGIN, LOGIN_ERROR, VERIFY, VERIFY_ERROR } from './../types/index';
+import {
+	LOGIN,
+	LOGIN_ERROR,
+	VERIFY,
+	VERIFY_ERROR,
+	LOGOUT,
+} from './../types/index';
 import history from './../history';
 
 export const login = ({ email, password }) => (
@@ -33,5 +39,15 @@ export const sendVerificationEmail = () => (
 		})
 		.catch((err) => {
 			dispatch({ type: VERIFY_ERROR, payload: err.message });
+		});
+};
+
+export const signout = () => (dispatch, getState, { getFirebase }) => {
+	getFirebase()
+		.auth()
+		.signOut()
+		.then(() => {
+			dispatch({ type: LOGOUT });
+			history.push('/');
 		});
 };

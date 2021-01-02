@@ -5,9 +5,11 @@ import history from './history';
 import PrivateRoute from './components/PrivateRoute';
 import VerifyAccount from './components/VerifyAccount';
 import Sell from './components/Sell';
+import Navbar from './components/Navbar';
 const App = () => {
 	return (
 		<Router history={history}>
+			<Navbar />
 			<Switch>
 				<Route exact path='/' component={Login} />
 				<PrivateRoute exact path='/verify' component={VerifyAccount} />

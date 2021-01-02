@@ -1,6 +1,8 @@
 import React from 'react';
+import Navbar from './Navbar';
+//* use rail
 const Sell = () => {
-	return <h1>Sell</h1>;
+	return <div>fkdls</div>;
 };
 
 export default Sell;
