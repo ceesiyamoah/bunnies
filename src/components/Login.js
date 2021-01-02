@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { login } from './../actions/authActions';
 import history from './../history';
+import { Link } from 'react-router-dom';
 //TODO beautify component
 //TODO better user verification and errorMessage
 const Login = ({ errorMessage, login, uid }) => {
 	const [loginDetails, setLoginDetails] = useState({ email: '', password: '' });
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (loginDetails.email.includes('@') && loginDetails.password.length > 6) {
-			login(loginDetails);
-		}
+
+		login(loginDetails);
 	};
 
 	useEffect(() => {
@@ -24,7 +24,7 @@ const Login = ({ errorMessage, login, uid }) => {
 				<div className='field'>
 					<label>Email</label>
 					<input
-						type='text'
+						type='email'
 						name='email'
 						id='email'
 						required
@@ -55,6 +55,7 @@ const Login = ({ errorMessage, login, uid }) => {
 				</div>
 				{errorMessage && <span style={{ color: 'red' }}>{errorMessage}</span>}
 				<button className='ui primary centered button'>Login</button>
+				<Link to='/resetpassword'>Forgot Password?</Link>
 			</form>
 		</div>
 	);

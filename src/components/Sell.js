@@ -1,6 +1,6 @@
 import React from 'react';
 const categories = ['food', 'diapers', 'bags', 'bottles'];
-//* use rail
+
 const Sell = () => {
 	return (
 		<>

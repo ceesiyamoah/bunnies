@@ -7,6 +7,7 @@ const MenuOptions = [
 	{ name: 'Inventory', link: '/inventory' },
 	{ name: 'Orders', link: '/orders' },
 ];
+const intialState = Array.from(Array(MenuOptions.length).fill(false));
 
 const Navbar = ({ uid, signout, isVerified }) => {
 	const [items, setItems] = useState([true, false, false]);
@@ -25,6 +26,7 @@ const Navbar = ({ uid, signout, isVerified }) => {
 						<>
 							{MenuOptions.map(({ name, link }, index) => (
 								<Link
+									key={name}
 									className={`${items[index] ? 'active' : ''} item`}
 									onClick={() => changeMenu(index)}
 									to={link}
@@ -35,9 +37,16 @@ const Navbar = ({ uid, signout, isVerified }) => {
 						</>
 					)}
 					<div className='right menu'>
-						<Link className='ui item' onClick={signout}>
-							Logout
+						<Link
+							to='/addproduct'
+							className='ui blue button'
+							onClick={() => setItems(intialState)}
+						>
+							Add Product
 						</Link>
+						<button className='ui red button' onClick={signout}>
+							Logout
+						</button>
 					</div>
 				</div>
 			)}

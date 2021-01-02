@@ -4,6 +4,8 @@ import {
 	VERIFY,
 	VERIFY_ERROR,
 	LOGOUT,
+	RESET_PASSWORD,
+	RESET_PASSWORD_ERROR,
 } from './../types/index';
 import history from './../history';
 
@@ -49,5 +51,24 @@ export const signout = () => (dispatch, getState, { getFirebase }) => {
 		.then(() => {
 			dispatch({ type: LOGOUT });
 			history.push('/');
+		});
+};
+
+export const resetPassword = (email) => (
+	dispatch,
+	getState,
+	{ getFirebase }
+) => {
+	getFirebase()
+		.auth()
+		.sendPasswordResetEmail(email)
+		.then(() => {
+			dispatch({ type: RESET_PASSWORD });
+			setTimeout(() => {
+				history.push('/');
+			}, 5000);
+		})
+		.catch((err) => {
+			dispatch({ type: RESET_PASSWORD_ERROR, payload: err.message });
 		});
 };
