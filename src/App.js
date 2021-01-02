@@ -8,14 +8,16 @@ import Sell from './components/Sell';
 import Navbar from './components/Navbar';
 const App = () => {
 	return (
-		<Router history={history}>
-			<Navbar />
-			<Switch>
-				<Route exact path='/' component={Login} />
-				<PrivateRoute exact path='/verify' component={VerifyAccount} />
-				<PrivateRoute exact path='/sell' component={Sell} />
-			</Switch>
-		</Router>
+		<div style={{ margin: '5px' }}>
+			<Router history={history}>
+				<Navbar />
+				<Switch>
+					<Route exact path='/' component={Login} />
+					<PrivateRoute exact path='/verify' component={VerifyAccount} />
+					<PrivateRoute exact path='/sell' component={Sell} />
+				</Switch>
+			</Router>
+		</div>
 	);
 };
 

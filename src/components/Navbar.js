@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signout } from './../actions/authActions';
-const MenuOptions = ['Sell', 'Inventory', 'Orders'];
+const MenuOptions = [
+	{ name: 'Sell', link: '/sell' },
+	{ name: 'Inventory', link: '/inventory' },
+	{ name: 'Orders', link: '/orders' },
+];
 
 const Navbar = ({ uid, signout, isVerified }) => {
 	const [items, setItems] = useState([true, false, false]);
@@ -19,12 +23,13 @@ const Navbar = ({ uid, signout, isVerified }) => {
 				<div className='ui secondary  menu'>
 					{isVerified && (
 						<>
-							{MenuOptions.map((item, index) => (
+							{MenuOptions.map(({ name, link }, index) => (
 								<Link
 									className={`${items[index] ? 'active' : ''} item`}
 									onClick={() => changeMenu(index)}
+									to={link}
 								>
-									{item}
+									{name}
 								</Link>
 							))}
 						</>
