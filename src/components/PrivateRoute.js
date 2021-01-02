@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router';
+import { connect } from 'react-redux';
 
 const PrivateRoute = ({
 	component: Component,
@@ -11,10 +12,12 @@ const PrivateRoute = ({
 		<Route
 			{...rest}
 			render={(props) =>
-				true ? <Component {...props} /> : <Redirect to='/' />
+				authExists ? <Component {...props} /> : <Redirect to='/' />
 			}
 		/>
 	);
 };
 
-export default PrivateRoute;
+export default connect(({ firebase: { auth } }) => ({
+	authExists: !!auth && !!auth.uid,
+}))(PrivateRoute);

@@ -4,12 +4,14 @@ import Login from './components/Login';
 import history from './history';
 import PrivateRoute from './components/PrivateRoute';
 import VerifyAccount from './components/VerifyAccount';
+import Sell from './components/Sell';
 const App = () => {
 	return (
 		<Router history={history}>
 			<Switch>
 				<Route exact path='/' component={Login} />
 				<PrivateRoute exact path='/verify' component={VerifyAccount} />
+				<PrivateRoute exact path='/sell' component={Sell} />
 			</Switch>
 		</Router>
 	);

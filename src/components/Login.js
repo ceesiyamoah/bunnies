@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { login } from './../actions/authActions';
+import history from './../history';
 //TODO beautify component
-const Login = ({ errorMessage }) => {
+//TODO better user verification and errorMessage
+const Login = ({ errorMessage, login, uid }) => {
 	const [loginDetails, setLoginDetails] = useState({ email: '', password: '' });
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (loginDetails.email.includes('@') && loginDetails.password.length > 6) {
-			console.log('fsdfsdfsdfsdf');
-			//do action
 			login(loginDetails);
 		}
 	};
+
+	useEffect(() => {
+		if (uid) {
+			history.push('/verify');
+		}
+	}, [uid]);
 	return (
 		<div className='ui raised very padded text container segment'>
 			<form className='ui form' onSubmit={handleSubmit}>
@@ -56,6 +62,7 @@ const Login = ({ errorMessage }) => {
 
 const mapStateToProps = (state) => ({
 	errorMessage: state.auth.loginError,
+	uid: state.firebase.auth.uid,
 });
 
 const mapDispatchToProps = {

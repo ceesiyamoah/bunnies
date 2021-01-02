@@ -1,16 +1,36 @@
-import React from 'react';
-const VerifyAccount = () => {
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import history from '../history';
+import { sendVerificationEmail } from './../actions/authActions';
+const VerifyAccount = ({ isVerified, sendVerificationEmail }) => {
+	useEffect(() => {
+		if (isVerified) {
+			history.push('/sell');
+		}
+	}, [isVerified]);
 	return (
 		<div className='ui placeholder segment'>
-			<div class='ui icon header'>
+			<div className='ui icon header'>
 				<i className='check circle icon'></i>
-				Please verify your email
+				Please verify your email.
+				<br />
+				<em>Please refresh the page after verification</em>
 			</div>
-			<div class='inline'>
-				<div class='ui primary button'>Send Verification email</div>
+			<div className='inline'>
+				<div className='ui primary button' onClick={sendVerificationEmail}>
+					Send Verification email
+				</div>
 			</div>
 		</div>
 	);
 };
 
-export default VerifyAccount;
+const mapStateToProps = (state) => ({
+	isVerified: state.firebase.auth.emailVerified,
+});
+
+const mapDispatchToProps = {
+	sendVerificationEmail,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(VerifyAccount);
