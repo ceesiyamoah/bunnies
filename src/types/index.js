@@ -5,3 +5,4 @@ export const VERIFY_ERROR = 'VERIFY_ERROR';
 export const LOGOUT = 'LOGOUT';
 export const RESET_PASSWORD = 'RESET_PASSWORD';
 export const RESET_PASSWORD_ERROR = 'RESET_PASSWORD_ERROR';
+export const CLEAR_ERROR = 'CLEAR_ERROR';

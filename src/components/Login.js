@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { login } from './../actions/authActions';
 import history from './../history';
 import { Link } from 'react-router-dom';
-//TODO beautify component
-//TODO better user verification and errorMessage
+import { Button, Container, Form, Message } from 'semantic-ui-react';
+//TODO center form
 const Login = ({ errorMessage, login, uid }) => {
 	const [loginDetails, setLoginDetails] = useState({ email: '', password: '' });
 	const handleSubmit = (e) => {
@@ -19,11 +19,11 @@ const Login = ({ errorMessage, login, uid }) => {
 		}
 	}, [uid]);
 	return (
-		<div className='ui raised very padded text container segment'>
-			<form className='ui form' onSubmit={handleSubmit}>
-				<div className='field'>
-					<label>Email</label>
-					<input
+		<Container style={{ width: '40%' }}>
+			<Form onSubmit={handleSubmit} error={errorMessage ? true : false}>
+				<Form.Field>
+					<Form.Input
+						label='Email'
 						type='email'
 						name='email'
 						id='email'
@@ -36,10 +36,10 @@ const Login = ({ errorMessage, login, uid }) => {
 							})
 						}
 					/>
-				</div>
-				<div className='field'>
-					<label htmlFor='password'>Password</label>
-					<input
+				</Form.Field>
+				<Form.Field>
+					<Form.Input
+						label='Password'
 						type='password'
 						name='password'
 						id='password'
@@ -52,12 +52,13 @@ const Login = ({ errorMessage, login, uid }) => {
 							})
 						}
 					/>
-				</div>
-				{errorMessage && <span style={{ color: 'red' }}>{errorMessage}</span>}
-				<button className='ui primary centered button'>Login</button>
+				</Form.Field>
+
+				{errorMessage && <Message error content={errorMessage} />}
+				<Button primary>Login</Button>
 				<Link to='/resetpassword'>Forgot Password?</Link>
-			</form>
-		</div>
+			</Form>
+		</Container>
 	);
 };
 

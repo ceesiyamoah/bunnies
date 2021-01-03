@@ -1,24 +1,23 @@
 import React from 'react';
-const categories = ['food', 'diapers', 'bags', 'bottles'];
-
+//!Add the tabs of categories
 const Sell = () => {
 	return (
 		<>
-			<div class='ui two column grid' style={{ margin: '5px' }}>
-				<div class='eleven wide column'>
-					<div class='ui icon input' style={{ width: '50%' }}>
+			<div className='ui two column grid' style={{ margin: '5px' }}>
+				<div className='eleven wide column'>
+					<div className='ui icon input' style={{ width: '50%' }}>
 						<input
 							type='text'
 							placeholder='Search...'
-							spellcheck='false'
+							spellCheck='false'
 							data-ms-editor='true'
 						/>
-						<i class='search icon'></i>
+						<i className='search icon'></i>
 					</div>
 					<br />
 					<br />
 				</div>
-				<div class='five wide column'>
+				<div className='five wide column'>
 					<div className='ui segment'>Cart</div>
 				</div>
 			</div>

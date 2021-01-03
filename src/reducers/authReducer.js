@@ -6,6 +6,7 @@ import {
 	LOGOUT,
 	RESET_PASSWORD,
 	RESET_PASSWORD_ERROR,
+	CLEAR_ERROR,
 } from './../types/index';
 const initalState = { loginError: '', verifyError: '', resetError: '' };
 const authReducer = (state = initalState, { type, payload }) => {
@@ -21,6 +22,8 @@ const authReducer = (state = initalState, { type, payload }) => {
 		case LOGOUT:
 			return initalState;
 		case RESET_PASSWORD:
+			return initalState;
+		case CLEAR_ERROR:
 			return initalState;
 		case RESET_PASSWORD_ERROR:
 			return { ...state, resetError: payload };

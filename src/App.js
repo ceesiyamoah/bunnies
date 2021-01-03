@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
+import 'semantic-ui-css/semantic.min.css';
 import Login from './components/Login';
 import history from './history';
 import PrivateRoute from './components/PrivateRoute';

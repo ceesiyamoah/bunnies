@@ -6,6 +6,7 @@ import {
 	LOGOUT,
 	RESET_PASSWORD,
 	RESET_PASSWORD_ERROR,
+	CLEAR_ERROR,
 } from './../types/index';
 import history from './../history';
 
@@ -24,6 +25,9 @@ export const login = ({ email, password }) => (
 		})
 		.catch((err) => {
 			dispatch({ type: LOGIN_ERROR, payload: err.message });
+			setTimeout(() => {
+				dispatch({ type: CLEAR_ERROR });
+			}, 5000);
 		});
 };
 

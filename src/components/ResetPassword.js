@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { resetPassword } from './../actions/authActions';
+import { Container, Form, Button } from 'semantic-ui-react';
 
 //! resetError should show when user enters an invalid email
 const ResetPassword = ({ resetPassword, resetError }) => {
@@ -13,30 +14,24 @@ const ResetPassword = ({ resetPassword, resetError }) => {
 	};
 
 	return (
-		<div className='ui raised very padded text container segment'>
-			<form className='ui form' onSubmit={handleSubmit}>
-				<div className='field'>
-					<label>Email</label>
-					<input
-						type='email'
-						name='email'
-						id='email'
-						required
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-					/>
-				</div>
-
-				<br />
-				<button
-					className={`ui primary centered button ${
-						buttonDisabled ? 'disabled' : ''
-					} `}
-				>
-					Send Email
-				</button>
-			</form>
-		</div>
+		<Container style={{ width: '40%' }}>
+			<Form onSubmit={handleSubmit}>
+				<Form.Input
+					type='email'
+					name='email'
+					id='email'
+					required
+					label='Email'
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+				></Form.Input>
+				{buttonDisabled ? (
+					<Button disabled>Send Email</Button>
+				) : (
+					<Button primary>Send Email</Button>
+				)}
+			</Form>
+		</Container>
 	);
 };
 const mapStateToProps = (state) => ({
