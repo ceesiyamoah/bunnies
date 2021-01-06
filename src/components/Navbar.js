@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signout } from './../actions/authActions';
+import { Button, Menu } from 'semantic-ui-react';
+import history from '../history';
 const MenuOptions = [
 	{ name: 'Sell', link: '/sell' },
 	{ name: 'Inventory', link: '/inventory' },
@@ -21,34 +22,36 @@ const Navbar = ({ uid, signout, isVerified }) => {
 	return (
 		<>
 			{uid && (
-				<div className='ui secondary  menu'>
+				<Menu secondary>
 					{isVerified && (
 						<>
 							{MenuOptions.map(({ name, link }, index) => (
-								<Link
-									key={name}
-									className={`${items[index] ? 'active' : ''} item`}
-									onClick={() => changeMenu(index)}
-									to={link}
-								>
-									{name}
-								</Link>
+								<Menu.Item
+									name={name}
+									active={items[index]}
+									onClick={() => {
+										changeMenu(index);
+										history.push(link);
+									}}
+								/>
 							))}
 						</>
 					)}
-					<div className='right menu'>
-						<Link
-							to='/addproduct'
-							className='ui blue button'
-							onClick={() => setItems(intialState)}
+					<Menu.Menu position='right'>
+						<Button
+							color='blue'
+							onClick={() => {
+								setItems(intialState);
+								history.push('/addproduct');
+							}}
 						>
 							Add Product
-						</Link>
-						<button className='ui red button' onClick={signout}>
+						</Button>
+						<Button color='red' onClick={signout}>
 							Logout
-						</button>
-					</div>
-				</div>
+						</Button>
+					</Menu.Menu>
+				</Menu>
 			)}
 		</>
 	);
