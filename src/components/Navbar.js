@@ -28,6 +28,7 @@ const Navbar = ({ uid, signout, isVerified }) => {
 							{MenuOptions.map(({ name, link }, index) => (
 								<Menu.Item
 									name={name}
+									key={name}
 									active={items[index]}
 									onClick={() => {
 										changeMenu(index);

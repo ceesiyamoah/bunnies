@@ -1,53 +1,179 @@
-import React from 'react';
-import { Button, Dropdown, Form, Label } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Button, Dropdown, Form, Icon, Image } from 'semantic-ui-react';
 import { categories } from './../helpers/constants';
 
-//TODO CONVERT TO SEMANTIC UI REACT
+const initialState = {
+	manufacturerName: '',
+	productName: '',
+	barcode: '',
+	packagesInStore: 0,
+	packagesInWarehouse: 0,
+	unitPerPackage: 0,
+	pricePerPackage: 0,
+	unitPrice: 0,
+	totalUnits: 0,
+	lowStockNotification: 0,
+};
+
 const AddProduct = () => {
+	const [productDetails, setProductDetails] = useState(initialState);
+	const [selected, setSelected] = useState(null);
+	const [imageFile, setImageFile] = useState(null);
+
+	const handleChange = (e) => {
+		console.log(e.target.name, productDetails[e.target.name]);
+		if (e.target.type !== 'number') {
+			setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
+		} else {
+			setProductDetails({
+				...productDetails,
+				[e.target.name]: +e.target.value,
+			});
+		}
+	};
+	const handlePicture = (e) => {
+		console.log(e.target.files[0]);
+		setImageFile(URL.createObjectURL(e.target.files[0]));
+	};
+
+	React.useEffect(() => {
+		setProductDetails((state) => ({
+			...state,
+			totalUnits:
+				(state.packagesInStore + state.packagesInWarehouse) *
+				state.unitPerPackage,
+		}));
+	}, [
+		productDetails.packagesInStore,
+		productDetails.packagesInWarehouse,
+		productDetails.unitPerPackage,
+	]);
+
 	return (
 		<Form style={{ margin: '0 10%' }}>
 			{/* header */}
 
 			<Form.Group widths='equal'>
-				<Form.Input fluid label='Manufacturer Name' required />
-				<Form.Input fluid label='Product Name' required />
+				<Form.Input
+					fluid
+					label='Manufacturer Name'
+					required
+					name='manufacturerName'
+					value={productDetails.manufacturerName}
+					onChange={handleChange}
+				/>
+				<Form.Input
+					fluid
+					label='Product Name'
+					required
+					name='productName'
+					value={productDetails.productName}
+					onChange={handleChange}
+				/>
 			</Form.Group>
 
-			<Form.Input label='Bar Code' placeholder='Barcode' />
+			<Form.Input
+				label='Bar Code'
+				placeholder='Barcode'
+				name='barcode'
+				value={productDetails.barcode}
+				onChange={handleChange}
+			/>
 			<Form.Group widths='equal'>
-				<Form.Input required label='Packages in store' type='number' min='0' />
+				<Form.Input
+					required
+					label='Packages in store'
+					type='number'
+					min='0'
+					name='packagesInStore'
+					onChange={handleChange}
+					value={productDetails.packagesInStore}
+				/>
 				<Form.Input
 					required
 					label='Packages in warehouse'
 					type='number'
 					min='0'
+					name='packagesInWarehouse'
+					onChange={handleChange}
+					value={productDetails.packagesInWarehouse}
 				/>
-				<Form.Input label='Price per package' type='number' min='0' />
+				<Form.Input
+					label='Quantity per package'
+					type='number'
+					min='0'
+					name='unitPerPackage'
+					onChange={handleChange}
+					value={productDetails.unitPerPackage}
+				/>
+				<Form.Input
+					label='Price per package'
+					type='number'
+					min='0'
+					name='pricePerPackage'
+					onChange={handleChange}
+					value={productDetails.pricePerPackage}
+				/>
 			</Form.Group>
 			<Form.Group widths='equal'>
-				<Form.Input label='Unit Price' type='number' min='0' step='.5' />
-				<Form.Input label='Total units' type='number' min='0' />
+				<Form.Input
+					label='Unit Price'
+					type='number'
+					min='0'
+					step='.5'
+					name='unitPrice'
+					onChange={handleChange}
+					value={productDetails.unitPrice}
+				/>
+				<Form.Input
+					label='Total units'
+					type='number'
+					min='0'
+					readOnly
+					name='totalUnits'
+					value={productDetails.totalUnits}
+				/>
 			</Form.Group>
 			<Form.Group>
 				<Form.Input
-					width={4}
+					width={8}
 					label='Low stock notification'
 					type='number'
 					min='0'
+					name='lowStockNotification'
+					onChange={handleChange}
+					value={productDetails.lowStockNotification}
 				/>
 
-				<Dropdown
-					fluid
-					placeholder='Select category'
-					selection
-					options={categories}
-				/>
+				<div
+					style={{
+						display: 'flex',
+						alignItems: 'flex-end',
+					}}
+				>
+					<Dropdown
+						fluid
+						placeholder='Select category'
+						selection
+						options={categories}
+						value={selected}
+						onChange={(e, data) => {
+							setSelected(data.value);
+						}}
+					/>
+				</div>
 			</Form.Group>
 			<Form.Input
 				type='file'
 				width='16'
 				accept='image/x-png,image/gif,image/jpeg'
+				onChange={handlePicture}
+				name='image'
+				icon={<Icon name='close' link onClick={() => setImageFile(null)} />}
 			/>
+			<Form.Field>
+				<Image src={imageFile} size='small' />
+			</Form.Field>
 			<Button color='blue'> Submit</Button>
 		</Form>
 	);
