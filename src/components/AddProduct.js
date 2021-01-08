@@ -19,6 +19,7 @@ const AddProduct = () => {
 	const [productDetails, setProductDetails] = useState(initialState);
 	const [selected, setSelected] = useState(null);
 	const [imageFile, setImageFile] = useState(null);
+	const [imgPreview, setImgPreview] = useState(null);
 
 	const handleChange = (e) => {
 		console.log(e.target.name, productDetails[e.target.name]);
@@ -32,8 +33,15 @@ const AddProduct = () => {
 		}
 	};
 	const handlePicture = (e) => {
-		console.log(e.target.files[0]);
-		setImageFile(URL.createObjectURL(e.target.files[0]));
+		if (e.target.files[0]) {
+			console.log(e.target.files[0]);
+			setImageFile(e.target.files[0]);
+			setImgPreview(URL.createObjectURL(e.target.files[0]));
+		}
+	};
+	const clearImage = () => {
+		setImageFile(null);
+		setImgPreview(null);
 	};
 
 	React.useEffect(() => {
@@ -163,16 +171,16 @@ const AddProduct = () => {
 					/>
 				</div>
 			</Form.Group>
+			{/* The name of the file should change to no file chosen when a user clears the field */}
 			<Form.Input
 				type='file'
 				width='16'
 				accept='image/x-png,image/gif,image/jpeg'
 				onChange={handlePicture}
-				name='image'
-				icon={<Icon name='close' link onClick={() => setImageFile(null)} />}
+				icon={<Icon name='close' link onClick={clearImage} />}
 			/>
 			<Form.Field>
-				<Image src={imageFile} size='small' />
+				<Image src={imgPreview} size='small' />
 			</Form.Field>
 			<Button color='blue'> Submit</Button>
 		</Form>
