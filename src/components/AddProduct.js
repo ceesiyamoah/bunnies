@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Dropdown, Form, Icon, Image } from 'semantic-ui-react';
+import { addProduct } from '../actions/productActions';
 import { categories } from './../helpers/constants';
+import { connect } from 'react-redux';
+import firebase from './../firebase';
+const storage = firebase.storage();
 
 const initialState = {
 	manufacturerName: '',
@@ -13,13 +17,46 @@ const initialState = {
 	unitPrice: 0,
 	totalUnits: 0,
 	lowStockNotification: 0,
+	image: null,
+	category: null,
 };
 
-const AddProduct = () => {
+const AddProduct = ({ addProduct, uid }) => {
 	const [productDetails, setProductDetails] = useState(initialState);
-	const [selected, setSelected] = useState(null);
-	const [imageFile, setImageFile] = useState(null);
 	const [imgPreview, setImgPreview] = useState(null);
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		const uploadTask = storage
+			.ref()
+			.child(
+				`images/products/${uid}/${
+					productDetails.manufacturerName + productDetails.productName
+				}.jpeg`
+			)
+			.put(productDetails.image);
+		uploadTask.on(
+			'state_changed',
+			(snapshot) => {},
+			(error) => {
+				console.log(error);
+			},
+			() => {
+				storage
+					.ref('images')
+					.child(
+						`products/${uid}/${
+							productDetails.manufacturerName + productDetails.productName
+						}.jpeg`
+					)
+					.getDownloadURL()
+					.then((url) => {
+						setProductDetails({ ...productDetails, image: url });
+						addProduct(productDetails);
+					});
+			}
+		);
+	};
 
 	const handleChange = (e) => {
 		console.log(e.target.name, productDetails[e.target.name]);
@@ -34,13 +71,12 @@ const AddProduct = () => {
 	};
 	const handlePicture = (e) => {
 		if (e.target.files[0]) {
-			console.log(e.target.files[0]);
-			setImageFile(e.target.files[0]);
+			setProductDetails({ ...productDetails, image: e.target.files[0] });
 			setImgPreview(URL.createObjectURL(e.target.files[0]));
 		}
 	};
 	const clearImage = () => {
-		setImageFile(null);
+		setProductDetails({ ...productDetails, image: null });
 		setImgPreview(null);
 	};
 
@@ -58,7 +94,7 @@ const AddProduct = () => {
 	]);
 
 	return (
-		<Form style={{ margin: '0 10%' }}>
+		<Form style={{ margin: '0 10%' }} onSubmit={handleSubmit}>
 			{/* header */}
 
 			<Form.Group widths='equal'>
@@ -164,9 +200,9 @@ const AddProduct = () => {
 						placeholder='Select category'
 						selection
 						options={categories}
-						value={selected}
+						value={productDetails.category}
 						onChange={(e, data) => {
-							setSelected(data.value);
+							setProductDetails({ ...productDetails, category: data.value });
 						}}
 					/>
 				</div>
@@ -178,6 +214,7 @@ const AddProduct = () => {
 				accept='image/x-png,image/gif,image/jpeg'
 				onChange={handlePicture}
 				icon={<Icon name='close' link onClick={clearImage} />}
+				required
 			/>
 			<Form.Field>
 				<Image src={imgPreview} size='small' />
@@ -187,116 +224,12 @@ const AddProduct = () => {
 	);
 };
 
-export default AddProduct;
+const mapStateToProps = (state) => ({
+	uid: state.firebase.auth.uid,
+});
 
-<form className='ui form'>
-	<h4 className='ui dividing header'>Item Information</h4>
-	<div className='field'>
-		<label>Name</label>
-		<div className='two fields'>
-			<div className='field'>
-				<input
-					type='text'
-					name='ManufacturerName'
-					required
-					placeholder='Manufacturer Name'
-				/>
-			</div>
-			<div className='field'>
-				<input type='text' name='ProductName' placeholder='Product Name' />
-			</div>
-		</div>
-	</div>
-	<div className='field'>
-		<label>Barcode</label>
-		<div className='field'>
-			<input type='text' name='barcode' placeholder='Barcode' />
-		</div>
-	</div>
-	<div className='field'>
-		<label>Package Quantity</label>
-		<div className='three fields'>
-			<div className='field'>
-				<input
-					type='number'
-					min='0'
-					name='packagesInStore'
-					required
-					placeholder='Packages in store'
-				/>
-			</div>
-			<div className='field'>
-				<input
-					type='number'
-					min='0'
-					name='packagesInWareHouse'
-					placeholder='Packages in warehouse'
-				/>
-			</div>
-			<div className='field'>
-				<div className='ui labeled input'>
-					{/* for value set the value of number to 2 decimal places */}
-					<div className='ui label'>GHS</div>
-					<input
-						type='number'
-						min='0'
-						name='pricePerPackage'
-						placeholder='Price per package'
-					/>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div className='field'>
-		<label>Unit</label>
-		<div className='two fields'>
-			<div className='field'>
-				<div className='ui labeled input'>
-					<div className='ui label'>GHS</div>
-					<input
-						type='number'
-						min='0'
-						name='unitPrice'
-						placeholder='Unit Price'
-					/>
-				</div>
-			</div>
-			<div className='field'>
-				<input
-					type='number'
-					min='0'
-					name='totalUnits'
-					placeholder='Total quantity of units'
-				/>
-			</div>
-		</div>
-	</div>
-	<div className='field'>
-		<label htmlFor=''>Low Stock Notification</label>
-		<div className='two fields'>
-			<div className='four wide field'>
-				<input
-					type='number'
-					min='0'
-					name='lowStockLevel'
-					placeholder='Low stock notification level'
-				/>
-			</div>
-			<div className='twelve wide field'>
-				<div className='ui selection show dropdown'>
-					<input type='hidden' name='gender' />
-					<i className='dropdown icon'></i>
-					<div className='default text'>Gender</div>
-					<div className='menu'>
-						<div className='item' data-value='1'>
-							Male
-						</div>
-						<div className='item' data-value='0'>
-							Female
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</form>;
+const mapDispatchToProps = {
+	addProduct,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddProduct);
