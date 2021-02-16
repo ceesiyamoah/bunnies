@@ -5,23 +5,39 @@ export const addProduct = (details) => async (
 	getState,
 	{ getFirebase }
 ) => {
-	console.log(details);
-	debugger;
 	getFirebase()
-		.firestore()
-		.collection('products')
-		.doc(details.manufacturerName + details.productName)
-		.update({
-			...details,
-			sellor: getState().firebase.auth.uid,
-			dateAdded: new Date(),
+		.storage()
+		.ref()
+		.child(
+			`images/products/${getState().firebase.auth.uid}/${
+				details.manufacturerName + details.productName
+			}`
+		)
+		.put(details.image)
+		.then((snapshot) => {
+			return snapshot.ref.getDownloadURL();
 		})
-		.then(() => {
-			history.push('/sell');
-			console.log(details);
+		.then((downloadURL) => {
+			getFirebase()
+				.firestore()
+				.collection('products')
+				.doc(details.manufacturerName + details.productName)
+				.set({
+					...details,
+					image: downloadURL,
+					sellor: getState().firebase.auth.uid,
+					dateAdded: new Date(),
+				})
+				.then(() => {
+					history.push('/sell');
+					console.log(details);
+				})
+				.catch((err) => {
+					console.log(err);
+					console.log(details);
+				});
 		})
 		.catch((err) => {
 			console.log(err);
-			console.log(details);
 		});
 };

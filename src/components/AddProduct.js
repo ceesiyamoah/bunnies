@@ -27,35 +27,7 @@ const AddProduct = ({ addProduct, uid }) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		const uploadTask = storage
-			.ref()
-			.child(
-				`images/products/${uid}/${
-					productDetails.manufacturerName + productDetails.productName
-				}.jpeg`
-			)
-			.put(productDetails.image);
-		uploadTask.on(
-			'state_changed',
-			(snapshot) => {},
-			(error) => {
-				console.log(error);
-			},
-			() => {
-				storage
-					.ref('images')
-					.child(
-						`products/${uid}/${
-							productDetails.manufacturerName + productDetails.productName
-						}.jpeg`
-					)
-					.getDownloadURL()
-					.then((url) => {
-						setProductDetails({ ...productDetails, image: url });
-						addProduct(productDetails);
-					});
-			}
-		);
+		addProduct(productDetails);
 	};
 
 	const handleChange = (e) => {
