@@ -31,7 +31,6 @@ const AddProduct = ({ addProduct, uid }) => {
 	};
 
 	const handleChange = (e) => {
-		console.log(e.target.name, productDetails[e.target.name]);
 		if (e.target.type !== 'number') {
 			setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
 		} else {
