@@ -5,18 +5,14 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 const ProductList = ({ products, searchTerm }) => {
-	console.log(products);
 	const [rows, setRows] = useState([]);
 
 	useEffect(() => {
 		if (products && products.length) {
 			setRows([]);
 			for (let i = 0; i < products.length; i = i + 4) {
-				console.log(products.slice(i, i + 4));
-
 				setRows((state) => [...state, products.slice(i, i + 4)]);
 			}
-			console.log(rows);
 		}
 	}, [products]);
 
@@ -58,7 +54,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default compose(
-	connect(mapStateToProps),
+	connect(mapStateToProps, {}),
 	firestoreConnect((ownProps) => [
 		{
 			collection: 'products',

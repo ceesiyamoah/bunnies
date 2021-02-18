@@ -1,12 +1,16 @@
 import React from 'react';
 import { Card, Image, Button } from 'semantic-ui-react';
 import { capitalize } from './../utils/functions';
+import { connect } from 'react-redux';
+import { addToCart } from './../actions/cartActions';
 const Product = ({
 	manufacturerName,
 	productName,
 	category,
 	image,
 	unitPrice,
+	id,
+	addToCart,
 }) => {
 	return (
 		<Card>
@@ -21,11 +25,18 @@ const Product = ({
 			</Card.Content>
 			<Card.Content extra>
 				<div className='ui two buttons'>
-					<Button color='green'>Add to cart</Button>
+					<Button
+						color='blue'
+						onClick={() => {
+							addToCart(id);
+						}}
+					>
+						Add to cart
+					</Button>
 				</div>
 			</Card.Content>
 		</Card>
 	);
 };
 
-export default Product;
+export default connect(null, { addToCart })(Product);
