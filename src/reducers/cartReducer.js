@@ -4,7 +4,10 @@ import { REMOVE_FROM_CART } from './../types/index';
 const cartReducer = (state = [], { type, payload }) => {
 	switch (type) {
 		case ADD_TO_CART:
-			return [...state, payload];
+			if (!state.includes(payload)) {
+				return [...state, payload];
+			}
+			return state;
 
 		case REMOVE_FROM_CART:
 			return state.filter((item) => item !== payload);

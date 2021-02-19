@@ -12,3 +12,27 @@ export const removeFromCart = (id) => (dispatch) => {
 export const clearCart = () => (dispatch) => {
 	dispatch({ type: CLEAR_CART });
 };
+
+export const saveOrders = (cart, name) => (
+	dispatch,
+	getState,
+	{ getFirebase }
+) => {
+	getFirebase()
+		.firestore()
+		.collection('orders')
+		.doc(getState().firebase.auth.uid)
+		.set({
+			name,
+			orderId: `${
+				getState().firebase.auth.uid + name + new Date().toLocaleString()
+			}`,
+			items: cart,
+			dateAdded: new Date(),
+			sellorId: getState().firebase.auth.uid,
+		})
+		.then(() => {
+			dispatch({ type: CLEAR_CART });
+		})
+		.catch((err) => {});
+};
