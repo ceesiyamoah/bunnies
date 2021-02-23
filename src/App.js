@@ -9,6 +9,7 @@ import Sell from './components/Sell';
 import Navbar from './components/Navbar';
 import ResetPassword from './components/ResetPassword';
 import AddProduct from './components/AddProduct';
+import Pay from './components/Pay';
 const App = () => {
 	return (
 		<div style={{ margin: '5px' }}>
@@ -20,6 +21,7 @@ const App = () => {
 					<PrivateRoute exact path='/verify' component={VerifyAccount} />
 					<PrivateRoute exact path='/sell' component={Sell} />
 					<PrivateRoute exact path='/addproduct' component={AddProduct} />
+					<PrivateRoute exact path='/pay' component={Pay} />
 				</Switch>
 			</Router>
 		</div>

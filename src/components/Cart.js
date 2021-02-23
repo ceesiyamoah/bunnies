@@ -6,8 +6,9 @@ import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 import Modal from './Modal';
+import history from './../history';
 const Cart = ({ products, saveOrders, cart }) => {
-	const [modalOpen, setModalOpen] = useState(false);
+	const [orderModalOpen, setOrderModalOpen] = useState(false);
 	if (!products) {
 		return null;
 	}
@@ -42,12 +43,20 @@ const Cart = ({ products, saveOrders, cart }) => {
 				</Grid>
 				<Divider />
 
-				<Button color='green' floated='left' size='large'>
+				<Button
+					color='green'
+					floated='left'
+					size='large'
+					onClick={() => {
+						history.push('/pay');
+					}}
+				>
 					Pay
 				</Button>
+
 				<Modal
-					open={modalOpen}
-					setOpen={setModalOpen}
+					open={orderModalOpen}
+					setOpen={setOrderModalOpen}
 					header='Enter order name'
 					positiveAction={saveOrders}
 				>

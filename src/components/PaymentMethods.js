@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Icon, Image } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 const PaymentMethods = ({ setOption, changeStep }) => {
 	return (
@@ -18,6 +19,11 @@ const PaymentMethods = ({ setOption, changeStep }) => {
 					link
 					onClick={() => {
 						setOption('cash');
+						changeStep((state) => ({
+							...state,
+							first: { completed: true, active: false },
+							second: { active: true },
+						}));
 					}}
 				/>
 			</Grid.Column>
