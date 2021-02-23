@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon, Step } from 'semantic-ui-react';
 import PaymentOptions from './PaymentOptions';
+import { connect } from 'react-redux';
+import history from '../history';
 
-const Pay = () => {
+const Pay = ({ cart }) => {
+	useEffect(() => {
+		if (!cart.length) {
+			history.push('/sell');
+		}
+	}, [cart]);
 	const [steps, setSteps] = useState({
 		first: { active: true, completed: false },
 		second: { active: false, completed: false },
@@ -51,9 +58,11 @@ const Pay = () => {
 					</Step.Content>
 				</Step>
 			</Step.Group>
-			<PaymentOptions changeStep={setSteps} steps={steps} />
+			<PaymentOptions changeStep={setSteps} steps={steps} cart={cart} />
 		</>
 	);
 };
 
-export default Pay;
+const mapStateToProps = (state) => ({ cart: state.cart });
+
+export default connect(mapStateToProps, {})(Pay);

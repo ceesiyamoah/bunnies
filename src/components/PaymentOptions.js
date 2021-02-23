@@ -3,9 +3,18 @@ import { Segment, Divider } from 'semantic-ui-react';
 import CashPayment from './CashPayment';
 import PaymentMethods from './PaymentMethods';
 import MomoPayment from './MomoPayment';
-const PaymentOptions = ({ changeStep, steps }) => {
+import Receipt from './Receipt';
+import history from './../history';
+const PaymentOptions = ({ changeStep, steps, cart }) => {
 	const [option, setOption] = useState('');
-	useEffect(() => {}, [option]);
+	const [amountPaid, setAmountPaid] = useState(null);
+
+	useEffect(() => {
+		if (!cart.length) {
+			history.push('/sell');
+		}
+	}, [cart]);
+
 	return (
 		<Segment placeholder basic>
 			{steps.first.active && (
@@ -14,16 +23,30 @@ const PaymentOptions = ({ changeStep, steps }) => {
 						setOption={setOption}
 						option={option}
 						changeStep={changeStep}
+						cart={cart}
 					/>
 
 					<Divider vertical>Or</Divider>
 				</>
 			)}
 			{steps.second.active && option === 'cash' ? (
-				<CashPayment setOption={changeStep} />
+				<CashPayment
+					setOption={changeStep}
+					amountPaid={amountPaid}
+					setAmountPaid={setAmountPaid}
+				/>
 			) : option === 'momo' ? (
-				<MomoPayment setOption={changeStep} />
+				<MomoPayment
+					setOption={changeStep}
+					amountPaid={amountPaid}
+					setAmountPaid={setAmountPaid}
+				/>
 			) : null}
+			{steps.third.active && (
+				<>
+					<Receipt amountPaid={amountPaid} />
+				</>
+			)}
 		</Segment>
 	);
 };

@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import history from './../history';
 
-const PaymentMethods = ({ setOption, changeStep }) => {
+const PaymentMethods = ({ setOption, changeStep, cart }) => {
+	useEffect(() => {
+		if (!cart.length) {
+			history.push('/sell');
+		}
+	}, [cart]);
 	return (
 		<Grid columns={2} relaxed='very' stackable centered>
 			<Grid.Column
